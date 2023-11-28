@@ -17,20 +17,21 @@ public class EmailScheduler {
 
   //  @Scheduled(cron = "0/20 * * * * ?")//20 sec
 	//fetching batch
+	
 //EMAIL
-	@Scheduled(cron = "0 0 */6 * * *") //6 hours
-    public void runJob() throws Exception {
-    	 try {
-    			JobParameters jobParameters = 
-    			  new JobParametersBuilder()
-    			  .addLong("time",System.currentTimeMillis()).toJobParameters();
-    				
-    			org.springframework.batch.core.JobExecution execution = jobLauncher.run(notificationJob, jobParameters);
-    			System.out.println("Exit Status : " + execution.getStatus());
-    				
-    		  } catch (Exception e) {
-    			e.printStackTrace();
-    		  }
-
-    }
+//	@Scheduled(cron = "0 0 */6 * * *") //6 hours
+//    public void runJob() throws Exception {
+//    	 try {
+//    			JobParameters jobParameters = 
+//    			  new JobParametersBuilder()
+//    			  .addLong("time",System.currentTimeMillis()).toJobParameters();
+//    				
+//    			org.springframework.batch.core.JobExecution execution = jobLauncher.run(notificationJob, jobParameters);
+//    			System.out.println("Exit Status : " + execution.getStatus());
+//    				
+//    		  } catch (Exception e) {
+//    			e.printStackTrace();
+//    		  }
+//
+//    }
 }

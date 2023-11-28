@@ -25,19 +25,38 @@ public class JobScheduler {
 	//fetching batch
 	
 	
-	@Scheduled(cron = "0 0 */1 * * *") // 1 hour
-    public void runJob() throws Exception {
-    	 try {
-    			JobParameters jobParameters = 
-    			  new JobParametersBuilder()
-    			  .addLong("time",System.currentTimeMillis()).toJobParameters();
-    				
-    			org.springframework.batch.core.JobExecution execution = jobLauncher.run(myJob, jobParameters);
-    			System.out.println("Exit Status : " + execution.getStatus());
-    				
-    		  } catch (Exception e) {
-    			e.printStackTrace();
-    		  }
+//	@Scheduled(cron = "0 0 */1 * * *") // 1 hour
+//	@Scheduled(cron = "0/20 * * * * ?")//20 sec
+//    public void runJob() throws Exception {
+//    	 try {
+//    			JobParameters jobParameters = 
+//    			  new JobParametersBuilder()
+//    			  .addLong("time",System.currentTimeMillis()).toJobParameters();
+//    				
+//    			org.springframework.batch.core.JobExecution execution = jobLauncher.run(myJob, jobParameters);
+//    			System.out.println("Exit Status : " + execution.getStatus());
+//    				
+//    		  } catch (Exception e) {
+//    			e.printStackTrace();
+//    		  }
+//
+//    }
+	   @Scheduled(cron = "0/20 * * * * ?") // Run every 20 seconds
+	    public void runJob() throws Exception {
+	        try {
+	            JobParameters jobParameters =
+	                    new JobParametersBuilder()
+	                            .addLong("time", System.currentTimeMillis())
+	                            .addLong("jobOffset", 0L)  
+	                            .addLong("offset", 0L)
+	                            .addLong("initialPageSize", 20L)
+	                            .toJobParameters();
 
-    }
+	            org.springframework.batch.core.JobExecution execution = jobLauncher.run(myJob, jobParameters);
+	            System.out.println("Exit Status: " + execution.getStatus());
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 }
