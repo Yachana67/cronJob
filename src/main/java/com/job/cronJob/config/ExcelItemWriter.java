@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.job.cronJob.entity.HealthCat;
 import com.job.cronJob.entity.Insurance;
+import com.job.cronJob.entity.InsuranceCategory;
 import com.job.cronJob.entity.PersonalCat;
 import com.job.cronJob.repo.HealthCatRepo;
 import com.job.cronJob.repo.InsuranceRepo;
@@ -26,6 +27,7 @@ public class ExcelItemWriter implements ItemWriter<Insurance> {
 	    @Autowired
 	    private PersonalCatRepo personalrepo; 
 
+	   
 	    @Override
 	    public void write(List<? extends Insurance> items) throws Exception {
       for (Insurance item : items) {
@@ -46,17 +48,40 @@ public class ExcelItemWriter implements ItemWriter<Insurance> {
 //	               
 //	                personalrepo.save(personalCat);
 //	            }
-//	        
-    	   Insurance insurance=new Insurance();
-    	   insurance.setCategory(item.getCategory());
-    	   insurance.setEmail(item.getEmail());
-    	   insurance.setName(item.getName());
-    	   insurance.setPolicy(item.getPolicy());
-    	   
-    	   insuranceRepo.save(insurance);
-       }
-	    	
-	    	
-	    }
+////	        
+//    	   Insurance insurance=new Insurance();
+//    	   insurance.setCategory(item.getCategory());
+//    	   insurance.setEmail(item.getEmail());
+//    	   insurance.setName(item.getName());
+//    	   insurance.setPolicy(item.getPolicy());
+//    	   
+//    	   insuranceRepo.save(insurance);
+//       }
+    	  switch (item.getCategory()) {
+          case HEALTH:
+              HealthCat healthCat = new HealthCat();
+              healthCat.setCategory(InsuranceCategory.HEALTH);
+              healthCat.setPolicy(item.getPolicy());
+              healthCat.setName(item.getName());
+              healthCat.setEmail(item.getEmail());
+              healthCatRepository.save(healthCat);
+              break;
+          case PERSONAL:
+              PersonalCat personalCat = new PersonalCat();
+              personalCat.setCategory(InsuranceCategory.PERSONAL);
+              personalCat.setPolicy(item.getPolicy());
+              personalCat.setName(item.getName());
+              personalCat.setEmail(item.getEmail());
+              personalrepo.save(personalCat);
+              break;
+          default:
+              // Handle default case or log an error if necessary
+              break;
+      }
 
+     
+  }
+      // Save the insurance item regardless of category
+      insuranceRepo.saveAll(items);
+	    }
 }

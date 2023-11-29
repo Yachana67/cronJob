@@ -1,6 +1,8 @@
 package com.job.cronJob.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +14,14 @@ public class HealthCat {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private int policy;
-	private String category;
+	@Enumerated(EnumType.STRING)
+	private InsuranceCategory category;
+	public InsuranceCategory getCategory() {
+		return category;
+	}
+	public void setCategory(InsuranceCategory category) {
+		this.category = category;
+	}
 	private String name;
 	private String email;
 	public int getId() {
@@ -27,12 +36,7 @@ public class HealthCat {
 	public void setPolicy(int policy) {
 		this.policy = policy;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
+	
 	public String getName() {
 		return name;
 	}

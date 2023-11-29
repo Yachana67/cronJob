@@ -63,20 +63,23 @@ public class FetchBatchConfig {
 	@Autowired
 	private ExcelService excelService;
 	
-	     int offset ; 
-	     int initialPageSize;
-	     int jobOffset;
+	   private int offset = 0;
+	    private int initialPageSize = 20;
+	    private int jobOffset = 0;
+	   
 	@Bean
 	public ItemReader<Insurance> excelItemReader() {
-		int linestoSkip;
-		  
-		if (jobOffset == 0) {
-		    linestoSkip = 1;
-		} else {
-		    offset = 1;  
-		    linestoSkip = offset + offset * initialPageSize;
-		    initialPageSize = initialPageSize + 20;
-		}
+		 int linestoSkip;
+		
+		    if (jobOffset == 0) {
+		        linestoSkip = 1; 
+		        jobOffset++;
+		    } else {
+		    	offset=1;
+		        linestoSkip = offset + offset * initialPageSize;
+		         
+		        initialPageSize += 100;
+		    }
 	    PoiItemReader<Insurance> reader = new PoiItemReader<>();
 	    //reader.setResource(new ClassPathResource("InsuranceData.xlsx"));
 	    try {
@@ -100,7 +103,7 @@ public class FetchBatchConfig {
 
 	    reader.setLinesToSkip(linestoSkip);//21 lines skipped
 	    reader.setRowMapper(excelRowMapper());
-	    reader.setMaxItemCount(20);
+	  reader.setMaxItemCount(20);
 	    
 
 	    return reader;
